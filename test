@@ -1,0 +1,23 @@
+#lang racket
+
+; Exercise 8
+
+(define read-examples (lambda (filename)
+                        (with-input-from-file filename
+                          read)
+                        ))
+
+(define examples (read-examples "examples.scm"))
+
+
+; Exercise 9
+
+(define add-example (lambda (examples_list example)
+                      (append examples_list example))
+                      )
+
+
+(add-example examples '(sun 10 90 yes -))
+
+
+

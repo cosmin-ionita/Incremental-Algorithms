@@ -1,0 +1,59 @@
+#lang racket
+
+(define read-examples (λ (filename)
+                        (with-input-from-file filename
+                          read)
+                        ))
+
+(define examples (read-examples "examples.scm"))
+
+(define (A0 examples)
+  (Let *
+       (;; Assignment of local VARIABLES.
+        ;; ===================================
+        (attributes (car examples))
+        (cases (examples))
+        (index-class; the index of 'class in the attributes list.
+         (list-index (lambda (x) (eq? X 'class)) (map first attributes)))
+        (possible classes
+                  (second ;only the set of values is relevant
+                   (list-ref index-class attributes)))
+        ;; variable that keeps track of the number of occurrences of each class.
+        (classes-accounted
+         ;; As a first step, the account of each class is initialized to 0.
+         (map (lambda (class) (cons class 0)) possible-classes))
+        (concept ())    ; variable without assignment, at the moment
+        
+        ;; Assignment of local FUNCTIONS.
+        ;; ===================================
+        ;; function that supports as an example a parameter, which uses
+        ;;; to update the class accounting.
+        (update-counting
+         (lambda (example)
+           (let ((class-of-example (list-ref example index-class)))
+             (set! counted-classes
+                   (map (lambda (x)
+                          (If (eq? (car x) class-of-example)
+                              ;Then
+                              (Cons (car x) (+ (cdr x) 1))
+                              ;else
+                              X))
+                        classes-accounted
+                        )))))
+        );, End of let* assignments
+         ;; Now, for each example of training, class counting is updated.
+         (for-each update-counting examples)
+         
+         ;;Finally, the class that has appeared the most is chosen:
+         ;;; first, the maximum number is obtained;
+         (set! concept (apply max (map cdr counted-classes)))
+         ;;; second, you get the class with that maximum number
+         ;;; temporarily stored in the variable concept
+         
+         (set! Concept
+               (first (find (lambda (x) (= (cdr x) concept)) counted-classes)))
+         ; And, finally, the concept induced by the algorithm is returned.
+         concept
+         ))
+
+(A0 examples)
